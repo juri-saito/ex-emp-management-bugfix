@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import jp.co.sample.emp_management.domain.Administrator;
 import jp.co.sample.emp_management.form.InsertAdministratorForm;
@@ -73,8 +72,8 @@ public class AdministratorController {
 	public String insert(
 			@Validated InsertAdministratorForm form,
 			BindingResult result,
-			RedirectAttributes redirectAttributes,
-			Model model) {
+			Model model
+			) {
 		
 		if(result.hasErrors()) {
 			System.out.println("error");
@@ -84,9 +83,16 @@ public class AdministratorController {
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
-		administratorService.insert(administrator);
-		return "redirect:/tologin";
-//		return "administrator/login";
+		
+		Administrator searchAdministrator = administratorService.findByMailAddress(form.getMailAddress());
+		if (searchAdministrator != null) {
+			model.addAttribute("mailError", "このメールアドレスは既に使われています");
+			return "administrator/insert";
+		}else {
+			administratorService.insert(administrator);
+			return "redirect:/";
+		}
+		
 	}
 
 	/////////////////////////////////////////////////////
@@ -97,7 +103,7 @@ public class AdministratorController {
 	 * 
 	 * @return ログイン画面
 	 */
-	@RequestMapping("/tologin")
+	@RequestMapping("/")
 	public String toLogin() {
 		return "administrator/login";
 	}
