@@ -74,25 +74,26 @@ public class AdministratorController {
 			BindingResult result
 			) {
 		
+				
+		Administrator existAdministrator = administratorService.findByMailAddress(form.getMailAddress());
+		if (existAdministrator != null) {
+			result.rejectValue("mailAddress", null, "このメールアドレスは既に使われています");
+		}
+		
+		if (!form.getPassword().equals(form.getCheckPassword())) {
+			result.rejectValue("checkPassword", null, "パスワードが一致しません");
+		}
+		
 		if(result.hasErrors()) {
 			return "administrator/insert";
 		}
 		
-		
-		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
 		BeanUtils.copyProperties(form, administrator);
+		administratorService.insert(administrator);
+		return "redirect:/";
 		
-		Administrator searchAdministrator = administratorService.findByMailAddress(form.getMailAddress());
-		if (searchAdministrator != null) {
-			//result.rejectValue("mailAddress", "MailError", new String[] {"mailAddress"}, "このメールアドレスは既に使われています");
-			result.rejectValue("mailAddress", null, "このメールアドレスは既に使われています");
-			return "administrator/insert";
-		}else {
-			administratorService.insert(administrator);
-			return "redirect:/";
-		}
 		
 	}
 
