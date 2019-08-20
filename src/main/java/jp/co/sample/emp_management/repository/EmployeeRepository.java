@@ -75,6 +75,23 @@ public class EmployeeRepository {
 	}
 
 	/**
+	 * 検索ワードから従業員情報を取得します.
+	 * 
+	 * @param 検索ワード 
+	 * @return 検索された従業員情報
+	 * @exception 従業員が存在しない場合は例外を発生します
+	 */
+	public Employee search(Integer searchWord) {
+		String sql = "SELECT id,name,image,gender,hire_date,mail_address,zip_code,address,telephone,salary,characteristics,dependents_count FROM employees WHERE id=:id";
+		
+		SqlParameterSource param = new MapSqlParameterSource().addValue("searchWord", searchWord);
+		
+		Employee development = template.queryForObject(sql, param, EMPLOYEE_ROW_MAPPER);
+		
+		return development;
+	}
+	
+	/**
 	 * 従業員情報を変更します.
 	 */
 	public void update(Employee employee) {
