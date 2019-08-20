@@ -71,14 +71,14 @@ public class AdministratorController {
 	@RequestMapping("/insert")
 	public String insert(
 			@Validated InsertAdministratorForm form,
-			BindingResult result,
-			Model model
+			BindingResult result
 			) {
 		
 		if(result.hasErrors()) {
-			System.out.println("error");
 			return "administrator/insert";
 		}
+		
+		
 		
 		Administrator administrator = new Administrator();
 		// フォームからドメインにプロパティ値をコピー
@@ -86,7 +86,8 @@ public class AdministratorController {
 		
 		Administrator searchAdministrator = administratorService.findByMailAddress(form.getMailAddress());
 		if (searchAdministrator != null) {
-			model.addAttribute("mailError", "このメールアドレスは既に使われています");
+			//result.rejectValue("mailAddress", "MailError", new String[] {"mailAddress"}, "このメールアドレスは既に使われています");
+			result.rejectValue("mailAddress", null, "このメールアドレスは既に使われています");
 			return "administrator/insert";
 		}else {
 			administratorService.insert(administrator);

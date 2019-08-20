@@ -15,6 +15,17 @@ public class Administrator {
 	private String mailAddress;
 	/** パスワード */
 	private String password;
+	/** 確認用パスワード */
+	private String checkPassword;
+
+	
+	public String getCheckPassword() {
+		return checkPassword;
+	}
+
+	public void setCheckPassword(String checkPassword) {
+		this.checkPassword = checkPassword;
+	}
 
 	/**
 	 * 引数無しのコンストラクタ.
@@ -34,11 +45,22 @@ public class Administrator {
 	 * @param password
 	 *            パスワード
 	 */
-	public Administrator(Integer id, String name, String mailAddress, String password) {
+	
+//	
+//	public Administrator(Integer id, String name, String mailAddress, String password) {
+//		this.id = id;
+//		this.name = name;
+//		this.mailAddress = mailAddress;
+//		this.password = password;
+//	}
+
+	public Administrator(Integer id, String name, String mailAddress, String password, String checkPassword) {
+		super();
 		this.id = id;
 		this.name = name;
 		this.mailAddress = mailAddress;
 		this.password = password;
+		this.checkPassword = checkPassword;
 	}
 
 	public Integer getId() {
