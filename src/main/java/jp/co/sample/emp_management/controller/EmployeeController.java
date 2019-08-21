@@ -53,6 +53,33 @@ public class EmployeeController {
 		return "employee/list";
 	}
 
+	/////////////////////////////////////////////////////
+	// ユースケース：従業員検索結果を表示する
+	/////////////////////////////////////////////////////
+	/**
+	 * 従業員検索結果画面を出力します.
+	 * 
+	 * @param model モデル
+	 * @return 従業員検索結果一覧画面
+	 */
+	@RequestMapping("/searchResultList")
+	public String searchResultList(String searchWord, Model model) {
+		List<Employee> employeeList = employeeService.searchEmployee(searchWord);
+		
+		if(employeeList.size()==0) {
+			employeeList = employeeService.showList();
+			model.addAttribute("noSearchResults", "１件もありませんでした");
+		}
+		
+		model.addAttribute("employeeList", employeeList);
+		return "employee/list";
+	}
+	
+//	List<Employee> employeeList = employeeService.searchEmployee(searchWord);
+//	model.addAttribute("employeeList", employeeList);
+//	return "employee/list";
+//}
+
 	
 	/////////////////////////////////////////////////////
 	// ユースケース：従業員詳細を表示する

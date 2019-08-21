@@ -64,9 +64,10 @@
 
 <!-- ここにモックのtable要素を貼り付けます -->
 
-				<form action="/employee/showList" method="post">
+				<form th:action="@{/employee/searchResultList}" method="post">
 				従業員検索：<input type="text" name="searchWord">
 				<button>検索</button>
+				<label th:text="${noSearchResults}"></label>
 				</form>
 				<table class="table table-striped">
 					<thead>
